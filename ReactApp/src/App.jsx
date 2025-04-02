@@ -8,6 +8,7 @@ import Store from './components/Store'
 
 // Notes: if "isLoggedIn" -> replace "Login" in Title with username
 //                        -> shows the recycle cards options
+// Notes: Add section about recyclable waste (2/4/2025)
 
 function App() {
   const [showLoginMenu, setshowLoginMenu] = useState(false);
