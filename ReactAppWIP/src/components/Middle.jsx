@@ -10,17 +10,14 @@ const Middle = () => {
             <div className='flex justify-around mb-10'>
                 <div className='middle-cards'>
                     <h2>Plastic Waste Generation</h2>
-                    <img src='plastic-waste.jpg' alt='plastic waste'></img>
                     <p>Vietnam generates approximately 3.1 million metric tons of plastic waste annually, with at least 10% leaking into the ocean.</p>
                 </div>
                 <div className='middle-cards'>
                     <h2>Recycling Rates</h2>
-                    <img src='Recycle.jpg' alt='recycle'></img>
                     <p>Only about 25% of plastic waste in Vietnam is recycled; the remaining 75% is discarded.</p>
                 </div>
                 <div className='middle-cards'>
                     <h2>Landfill Practices</h2>
-                    <img src='landfill.jpg' alt='landfill'></img>
                     <p>Approximately 85% of Vietnam's waste is buried without treatment in landfill sites, 80% of which are considered unhygienic and contribute to environmental pollution.</p>
                 </div>
             </div>

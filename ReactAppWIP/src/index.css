@@ -43,7 +43,7 @@
             height: 40vh;
         } */
         & img {
-            @apply rounded-lg h-75;
+            @apply rounded-lg h-75 w-full;
         }
 
         & input {
@@ -69,7 +69,7 @@
     }
 
     .store-container {
-        @apply font-montserrat bg-white rounded-[30px] shadow-lg relative overflow-y-auto w-full max-w-[1024px] min-h-[480px] max-h-[80vh] h-auto p-6 sm:p-8;
+        @apply font-montserrat rounded-[30px] shadow-lg relative w-full max-w-[1024px] min-h-[480px] h-auto p-6 sm:p-8;
 
         & button {
             @apply bg-light-green text-ivory rounded-xl px-1 py-1;
@@ -81,18 +81,14 @@
     }
 
     .middle-container {
-        @apply p-5 overflow-y-auto;
+        @apply p-5;
 
         .middle-cards {
-            @apply w-[30vw] bg-ivory flex items-center flex-col p-5 rounded-2xl;
+            @apply w-[30vw] h-100 bg-white flex items-center flex-col p-5;
         }
 
         & h2 {
             @apply text-3xl font-bold text-center;
-        }
-
-        & img {
-            @apply rounded-lg w-[90%] h-[70%] m-3;
         }
 
         & p {

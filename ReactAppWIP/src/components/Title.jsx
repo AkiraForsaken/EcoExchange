@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../assets/logo.jpg'
 
-const Title = ({ onLoginClick, onStoreClick, isLoggedIn }) => {
+const Title = ({ onLoginClick, onStoreClick }) => {
     return (
         <nav className="flex justify-between items-center h-20 text-black text-2xl">
             <div className='flex-center p-4 gap-4'>
@@ -11,7 +11,7 @@ const Title = ({ onLoginClick, onStoreClick, isLoggedIn }) => {
             <div className='flex-center gap-8 p-4 '>
                 <a className='cursor-pointer' onClick={onStoreClick}> Store </a>
                 <a className='cursor-pointer'> About </a>
-                <a className='cursor-pointer' onClick={onLoginClick}> {isLoggedIn ? "Guest" : "Log in"} </a>
+                <a className='cursor-pointer' onClick={onLoginClick}> Login </a>
             </div>
         </nav>
     )

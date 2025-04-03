@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import './login.css'
 
-const LoginSignup = ({ onClose, onLoginClick }) => {
+const LoginSignup = ({ onClose }) => {
     const [isActive, setIsActive] = useState(false);
     return (
-        <div className='modal-overlay'>
+        <div className='flex-center mb-5'>
             <div className={`container ${isActive ? 'active' : ''}`} id='container'>
                 <div className='form-container sign-up'> {/* Right side  */}
                     <form>
@@ -37,7 +37,7 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                         <input type="email" placeholder='email' />
                         <input type="password" placeholder='password' />
                         <a href="#">Forgot your password?</a>
-                        <button onClick={() => {onLoginClick(); onClose();}}>Log in</button>
+                        <button>Log in</button>
                     </form>
                 </div>
                 <div className='toggle-container'>
