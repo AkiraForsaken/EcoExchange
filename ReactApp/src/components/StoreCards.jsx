@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StoreCards = ({type, price}) => {
+const StoreCards = ({type, price, userPoints, setUserPoints}) => {
   const typeLabels = {
     "toilet-paper":"Toilet paper",
     "sting":"Sting energy drink",
@@ -12,7 +12,13 @@ const StoreCards = ({type, price}) => {
         <h3 className='text-xl my-3 text-center'>
           {typeLabels[type] || "Item"} {/* Unknown is just generic "Item" */}
         </h3>
-        <button>Redeem: {price} points</button>
+        <button onClick={() => {
+          if (userPoints < price){
+            alert("Insufficient points!");
+            return;
+          }  
+          setUserPoints(userPoints - price);
+        }}> Redeem: {price} points</button>
     </div>
   )
 } 

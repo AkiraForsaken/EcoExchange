@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const RecycleCard = ({ type }) => {
+const RecycleCard = ({ type, setUserPoints, userPoints }) => {
   const [Weight, setWeight] = useState(1);
   const [Points, setPoints] = useState(10);
 
@@ -23,7 +23,7 @@ const RecycleCard = ({ type }) => {
             value={Weight} min={1} max={100000}></input>
             <span>grams</span>
         </div>
-        <button>Recycle for {Points} points</button>
+        <button onClick={() => setUserPoints(userPoints + Points)}>Recycle for {Points} points</button>
     </div>
   )
 }
