@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 
-const UserInfo = ({userData, setuserData, onClose, points}) => {
+const UserInfo = ({userData, setuserData, onClose, onLogOut ,points}) => {
   // const [userData, setuserData] = useState({
   //   fullname: "",
   //   age: 0,
@@ -48,9 +48,10 @@ const UserInfo = ({userData, setuserData, onClose, points}) => {
             <textarea placeholder="Enter your home address" name='address' value={formData.address} onChange={handleDataChange} className="border p-2 rounded-md"></textarea>
 
             {/* Submit Button */}
-            <button type="submit" className="bg-blue-500 text-white p-2 rounded-md mt-3 hover:bg-blue-600">
-                Save Information
-            </button>
+            <div className='flex justify-between'>
+              <button type="submit" className="w-[49%] h-15">Save Information</button>
+              <button type="submit" className="w-[49%] h-15" onClick={onLogOut}>Log Out</button>
+            </div>
             </form>
         </div>
     </div>

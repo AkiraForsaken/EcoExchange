@@ -37,7 +37,7 @@ function App() {
           </ul>
         </section> : <></>}
         {showLoginMenu ? <LoginSignup onClose={() => setshowLoginMenu(false)} onLoginClick={() => {setisLoggedIn(true)}} /> : <></>}
-        {showUserInfo ? <UserInfo userData={userData} setuserData={setuserData} onClose={() => setshowUserInfo(false)} points={userPoints}/> : <></>}
+        {showUserInfo ? <UserInfo userData={userData} setuserData={setuserData} onClose={() => setshowUserInfo(false)} onLogOut={() => setisLoggedIn(false)} points={userPoints}/> : <></>}
         {showStoreMenu ? <Store userPoints={userPoints} setUserPoints={setuserPoints} onClose={() => setshowStoreMenu(false)}/> : <></>}
       </main>
       <SimpleFooter />

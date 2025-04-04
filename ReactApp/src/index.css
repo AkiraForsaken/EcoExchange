@@ -72,11 +72,11 @@
         @apply font-montserrat bg-white rounded-[30px] shadow-lg relative overflow-y-auto w-full max-w-[1024px] min-h-[480px] max-h-[80vh] h-auto p-6 sm:p-8;
 
         & button {
-            @apply bg-light-green text-ivory rounded-xl px-1 py-1;
+            @apply bg-light-green text-ivory rounded-xl px-1 py-1 hover:bg-blue-600 hover:text-white;
         }
 
         & img {
-            @apply rounded-lg w-[90%];
+            @apply rounded-lg w-[90%] h-[70%];
         }
     }
 
