@@ -20,7 +20,7 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                         <input type="text" placeholder='Name' />
                         <input type="email" placeholder='email' />
                         <input type="password" placeholder='password' />
-                        <button>Sign up</button>
+                        <button onClick={() => {onLoginClick(); onClose();}}>Sign up</button>
                     </form>
                 </div>
                 <div className='form-container sign-in'>  {/* Left side  */}

@@ -34,6 +34,7 @@ function App() {
             <RecycleCard userPoints={userPoints} setUserPoints={setuserPoints} type='cardboard' />
             <RecycleCard userPoints={userPoints} setUserPoints={setuserPoints} type='paper' />
             <RecycleCard userPoints={userPoints} setUserPoints={setuserPoints} type='batteries' />
+            <RecycleCard userPoints={userPoints} setUserPoints={setuserPoints} type='aluminium-cans' />
           </ul>
         </section> : <></>}
         {showLoginMenu ? <LoginSignup onClose={() => setshowLoginMenu(false)} onLoginClick={() => {setisLoggedIn(true)}} /> : <></>}

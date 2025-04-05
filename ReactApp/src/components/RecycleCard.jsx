@@ -1,6 +1,14 @@
 import React, {useState} from 'react'
 
 const RecycleCard = ({ type, setUserPoints, userPoints }) => {
+  const typeLabels = {
+    "plastic-bottles":"Plastic bottles",
+    "aluminium-cans":"Aluminium cans",
+    "paper":"Old paper",
+    "cardboard":"Cardboard",
+    "glass":"Glass",
+    "batteries":"Old batteries"
+  }
   const [Weight, setWeight] = useState(1);
   const [Points, setPoints] = useState(10);
 
@@ -15,7 +23,7 @@ const RecycleCard = ({ type, setUserPoints, userPoints }) => {
   return (
     <div className='recycle-card'>
         <img src={`${type}.jpg`} alt={type}></img>
-        <h3>{type}</h3>
+        <h3>{typeLabels[type] || "Item"}</h3>
         <div className='flex-center flex-row'>
             <p>Weight:</p>
             <input type='number' placeholder='1' 

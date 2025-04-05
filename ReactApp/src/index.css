@@ -36,7 +36,7 @@
 
 @layer component {
     .recycle-card{
-        @apply flex-col flex-center bg-white p-5 rounded-2xl shadow-inner m-3 shadow-light-100/10;
+        @apply flex-col flex-center bg-white p-5 rounded-2xl shadow-inner m-3 shadow-light-100/10 xs:w-[35%̀] md:w-[50%] lg:w-[75%];
 
         /* & img {
             width: 15vw;
@@ -56,7 +56,7 @@
         }
 
         & button {
-            @apply bg-light-green text-ivory rounded-xl px-2 py-1;
+            @apply bg-light-green text-ivory rounded-xl px-2 py-1 hover:bg-blue-600 hover:text-white;
         }
     }
 
@@ -64,7 +64,13 @@
         @apply space-y-9;
     
         & ul {
-            @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+            @apply grid grid-cols-1 gap-10 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center;
+        }
+    }
+
+    .form-container {
+        & button {
+            @apply bg-light-green text-ivory rounded-xl px-2 py-1 hover:bg-blue-600 hover:text-white;
         }
     }
 
