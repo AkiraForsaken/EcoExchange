@@ -22,7 +22,7 @@ const RecycleCard = ({ type, setUserPoints, userPoints }) => {
 
   return (
     <div className='recycle-card'>
-        <img src={`${type}.jpg`} alt={type}></img>
+        <img src={`${import.meta.env.BASE_URL}/images/${type}.jpg`} alt={type}></img>
         <h3>{typeLabels[type] || "Item"}</h3>
         <div className='flex-center flex-row'>
             <p>Weight:</p>

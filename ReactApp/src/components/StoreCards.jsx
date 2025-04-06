@@ -11,7 +11,7 @@ const StoreCards = ({type, price, userPoints, setUserPoints}) => {
   }
   return (
     <div className='flex-center flex-col bg-gray-100 w-[250px] h-[350px] p-3 rounded-xl'>
-        <img src={`${type}.jpg`} alt={type} />
+        <img src={`${import.meta.env.BASE_URL}/images/${type}.jpg`} alt={type} />
         <h3 className='text-xl my-3 text-center'>
           {typeLabels[type] || "Item"} {/* Unknown is just generic "Item" */}
         </h3>
