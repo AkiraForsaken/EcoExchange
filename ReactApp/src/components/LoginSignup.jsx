@@ -1,13 +1,72 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+import {toast} from 'react-hot-toast'
+import {data, useNavigate} from 'react-router-dom'
 import './login.css'
 
 const LoginSignup = ({ onClose, onLoginClick }) => {
+    const navigate = useNavigate()
+    const [loginData, setLoginData] = useState({
+        email: '',
+        password: '',
+    })
+    const [registerData, setRegisterData] = useState({
+        name: '',
+        email: '',
+        password: '',
+    })
+    const registerUser = async (e) => {
+        e.preventDefault();
+        const {name, email, password} = registerData
+        try {
+            const {data} = await axios.post('/register', {
+                name, email, password
+            })
+            if (data.error){
+                toast.error(data.error)
+            } else {
+                setRegisterData({
+                    name: '',
+                    email: '',
+                    password: '',
+                })
+                toast.success('Register success. Welcome!')
+                navigate('/')
+                onClose()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const loginUser = async (e) => {
+        e.preventDefault()
+        const {email, password} = loginData
+        try {
+            const {data} = await axios.post('/login', {
+                email, password
+            }) // matches with endpoint in the authRoutes server side
+            if (data.error){
+                toast.error(data.error)
+            } else {
+                setLoginData({
+                    email: '',
+                    password: '',
+                })
+                toast.success('Login success.')
+                navigate('/')
+                onLoginClick()
+                onClose()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const [isActive, setIsActive] = useState(false);
     return (
         <div className='modal-overlay'>
             <div className={`container ${isActive ? 'active' : ''}`} id='container'>
                 <div className='form-container sign-up'> {/* Right side  */}
-                    <form>
+                    <form onSubmit={registerUser}>
                         <span onClick={onClose} className="close-button right-5 text-xl">X</span>
                         <h1>Create Account</h1>
                         <div className="social-icons">
@@ -17,14 +76,18 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                             <a href='#' className='icons'><i className="fa-brands fa-instagram"></i></a>
                         </div>
                         <span> or use your email for registration</span>
-                        <input type="text" placeholder='Name' />
-                        <input type="email" placeholder='email' />
-                        <input type="password" placeholder='password' />
-                        <button onClick={() => {onLoginClick(); onClose();}}>Sign up</button>
+                        <input type="text" placeholder='Name' 
+                        value={registerData.name} onChange={(e) => {setRegisterData({...registerData, name: e.target.value})}}/>
+                        <input type="email" placeholder='email' 
+                        value={registerData.email} onChange={(e) => {setRegisterData({...registerData, email: e.target.value})}}/>
+                        <input type="password" placeholder='password' 
+                        value={registerData.password} onChange={(e) => {setRegisterData({...registerData, password: e.target.value})}}/>
+                        {/* <button onClick={() => {onLoginClick(); onClose();}}>Sign up</button> */}
+                        <button type="submit">Sign up</button>
                     </form>
                 </div>
                 <div className='form-container sign-in'>  {/* Left side  */}
-                    <form>
+                    <form onSubmit={loginUser}>
                         <span onClick={onClose} className="close-button left-5 text-xl">X</span>
                         <h1>Sign in</h1>
                         <div className="social-icons">
@@ -34,10 +97,13 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                             <a href='#' className='icons'><i className="fa-brands fa-instagram"></i></a>
                         </div>
                         <span> or use your email password to sign in</span>
-                        <input type="email" placeholder='email' />
-                        <input type="password" placeholder='password' />
+                        <input type="email" placeholder='email' 
+                        value={loginData.email} onChange={(e) => {setLoginData({...loginData, email: e.target.value})}}/>
+                        <input type="password" placeholder='password' 
+                        value={loginData.password} onChange={(e) => {setLoginData({...loginData, password: e.target.value})}}/>
                         <a href="#">Forgot your password?</a>
-                        <button onClick={() => {onLoginClick(); onClose();}}>Log in</button>
+                        {/* <button onClick={() => {onLoginClick(); onClose();}}>Log in</button> */}
+                        <button type="submit">Log in</button>
                     </form>
                 </div>
                 <div className='toggle-container'>

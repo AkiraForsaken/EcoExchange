@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import { UserContext } from '../../context/UserContext';
 
 const UserInfo = ({userData, setuserData, onClose, onLogOut ,points}) => {
   // const [userData, setuserData] = useState({
@@ -6,7 +7,7 @@ const UserInfo = ({userData, setuserData, onClose, onLogOut ,points}) => {
   //   age: 0,
   //   address: ""
   // })
-
+  const {user} = useContext(UserContext)
   const [formData, setformData] = useState(userData);
 
   const handleDataChange = (event) => {
