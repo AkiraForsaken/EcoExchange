@@ -31,7 +31,7 @@ const RecycleCard = ({ type }) => {
         pointsEarned: points,
       });
       if (response.data.success) {
-        const updatedUser = await axios.get('/profile');
+        const updatedUser = response.data.user;
         // setUser({ ...user, points: user.points + points });
         setUser(updatedUser);
       }

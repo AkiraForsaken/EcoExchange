@@ -23,7 +23,7 @@ const userSchema = new Schema({
     history: {
         recycleItems: [
             {
-                type: String,
+                type: { type: String },
                 weight: Number,
                 pointsEarned: Number,
                 date: { type: Date, default: Date.now },
@@ -31,7 +31,7 @@ const userSchema = new Schema({
         ],
         redeemItems: [
             {
-                type: String,
+                type: { type: String },
                 price: Number,
                 date: { type: Date, default: Date.now },
             },

@@ -128,7 +128,7 @@ const recycleAction = async (req, res) => {
             },
             $inc: { points: pointsEarned }, // Increment user points
           },
-          { new: true }
+          { new: true } // Ensure updated user obj is returned
         );
     
         res.json({ success: true, user });

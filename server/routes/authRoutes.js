@@ -17,7 +17,7 @@ router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/profile', getProfile) 
 router.post('/recycle', recycleAction)
-router.post('redeem', redeemAction)
+router.post('/redeem', redeemAction)
 router.put('/profile', updateProfile)
 router.post('/logout', onLogOut)
 
