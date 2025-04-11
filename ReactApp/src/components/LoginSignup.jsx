@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import {data, useNavigate} from 'react-router-dom'
 import './login.css'
+import { UserContext } from '../../context/UserContext'
 
-const LoginSignup = ({ onClose, onLoginClick }) => {
+const LoginSignup = ({ onClose }) => {
     const navigate = useNavigate()
+    const { setUser } = useContext(UserContext)
     const [loginData, setLoginData] = useState({
         email: '',
         password: '',
@@ -52,9 +54,9 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                     email: '',
                     password: '',
                 })
+                setUser(data); // Update UserContext
                 toast.success('Login success.')
                 navigate('/')
-                onLoginClick()
                 onClose()
             }
         } catch (error) {
@@ -65,7 +67,8 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
     return (
         <div className='modal-overlay'>
             <div className={`container ${isActive ? 'active' : ''}`} id='container'>
-                <div className='form-container sign-up'> {/* Right side  */}
+                <div className='form-container sign-up'> 
+                    {/* Right side  */}
                     <form onSubmit={registerUser}>
                         <span onClick={onClose} className="close-button right-5 text-xl">X</span>
                         <h1>Create Account</h1>
@@ -86,7 +89,8 @@ const LoginSignup = ({ onClose, onLoginClick }) => {
                         <button type="submit">Sign up</button>
                     </form>
                 </div>
-                <div className='form-container sign-in'>  {/* Left side  */}
+                <div className='form-container sign-in'>  
+                    {/* Left side  */}
                     <form onSubmit={loginUser}>
                         <span onClick={onClose} className="close-button left-5 text-xl">X</span>
                         <h1>Sign in</h1>

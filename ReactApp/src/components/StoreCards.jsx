@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import axios from 'axios'
+import { UserContext } from '../../context/UserContext'
+import toast from 'react-hot-toast'
 
 const StoreCards = ({type, price, userPoints, setUserPoints}) => {
   const typeLabels = {
@@ -9,19 +12,33 @@ const StoreCards = ({type, price, userPoints, setUserPoints}) => {
     "eggs":"Chicken eggs",
     "cup":"Glass cup"
   }
+  const {user, setUser } = useContext(UserContext);
+  const handleRedeem = async () => {
+    if (user.points < price) {
+      toast.error('Insufficient points!');
+      return;
+    }
+    try {
+      const response = await axios.post('/redeem', {
+        userId: user._id,
+        type,
+        price,
+      });
+      if (response.data.success) {
+        const updatedUser = response.data.user;
+        setUser(updatedUser);
+      }
+    } catch (error) {
+      console.error('Error redeeming item:', error);
+    }
+  };
   return (
     <div className='flex-center flex-col bg-gray-100 w-[250px] h-[350px] p-3 rounded-xl'>
         <img src={`${import.meta.env.BASE_URL}/images/${type}.jpg`} alt={type} />
         <h3 className='text-xl my-3 text-center'>
-          {typeLabels[type] || "Item"} {/* Unknown is just generic "Item" */}
+          {type}
         </h3>
-        <button onClick={() => {
-          if (userPoints < price){
-            alert("Insufficient points!");
-            return;
-          }  
-          setUserPoints(userPoints - price);
-        }}> Redeem: {price} points</button>
+        <button onClick={handleRedeem}> Redeem: {price} points</button>
     </div>
   )
 } 

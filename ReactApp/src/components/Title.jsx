@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import logo from '../assets/logo.jpg'
+import { UserContext } from '../../context/UserContext'
+import toast from 'react-hot-toast'
 
-const Title = ({ onLoginClick, onStoreClick, isLoggedIn }) => {
+const Title = ({ onLoginClick, onStoreClick, onUserInfoClick }) => {
+    const {user} = useContext(UserContext)
     return (
         <nav className="flex justify-between items-center h-20 text-black text-2xl">
             <div className='flex-center p-4 gap-4'>
@@ -9,9 +12,11 @@ const Title = ({ onLoginClick, onStoreClick, isLoggedIn }) => {
                 <span className='text-4xl'>EcoExchange</span>
             </div>
             <div className='flex-center gap-8 p-4 '>
-                <a className='cursor-pointer' onClick={onStoreClick}> Store </a>
+                {user ? <a className='cursor-pointer' 
+                onClick={user ? onStoreClick : () => {toast.error('Not Logged In')}}> Store </a> : <></>}
                 <a className='cursor-pointer'> About </a>
-                <a className='cursor-pointer' onClick={onLoginClick}> {isLoggedIn ? "Guest" : "Log in"} </a>
+                <a className='cursor-pointer' 
+                onClick={user ? onUserInfoClick : onLoginClick}> {user ? user.name : "Log in"} </a>
             </div>
         </nav>
     )

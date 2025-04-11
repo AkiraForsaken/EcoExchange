@@ -78,8 +78,9 @@ const loginUser = async (req, res) => {
 const getProfile = (req, res) => { // 
     const {token} = req.cookies
     if (token){
-        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+        jwt.verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
             if (err) throw err;
+            const user = await User.findById(decoded.id).select('-password')
             res.json(user)
         })
     } else {
@@ -87,9 +88,117 @@ const getProfile = (req, res) => { //
     }
 }
 
+const addRecycleHistory = async (userId, itemType, weight, pointsEarned) => {
+    await User.findByIdAndUpdate(userId, {
+        $push: {
+            'history.recycleItems': {
+                type: itemType,
+                weight,
+                pointsEarned,
+            },
+        },
+        $inc: { points: pointsEarned },
+    });
+};
+
+const addRedeemHistory = async (userId, itemType, price) => {
+    await User.findByIdAndUpdate(userId, {
+        $push: {
+            'history.redeemItems': {
+                type: itemType,
+                price,
+            },
+        },
+        $inc: { points: -price },
+    });
+};
+
+const recycleAction = async (req, res) => {
+    const { userId, type, weight, pointsEarned } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(
+          userId,
+          {
+            $push: {
+              'history.recycleItems': {
+                type,
+                weight,
+                pointsEarned,
+              },
+            },
+            $inc: { points: pointsEarned }, // Increment user points
+          },
+          { new: true }
+        );
+    
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error recycling:', error);
+        res.status(500).json({ success: false, error: 'Failed to recycle item' });
+    }
+}
+
+const redeemAction = async (req, res) => {
+    const { userId, type, price } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(
+          userId,
+          {
+            $push: {
+              'history.redeemItems': {
+                type,
+                price,
+              },
+            },
+            $inc: { points: -price }, // Deduct points
+          },
+          { new: true }
+        );
+    
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error redeeming item:', error);
+        res.status(500).json({ success: false, error: 'Failed to redeem item' });
+    }
+}
+
+const updateProfile = async (req, res) => {
+    const { name, age, address } = req.body;
+    const { token } = req.cookies;
+
+    if (!token) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const updatedUser = await User.findByIdAndUpdate(
+        decoded.id,
+        { name, age, address },
+        { new: true }
+        ).select('-password'); // Exclude password from the response
+
+        res.json({ success: true, user: updatedUser });
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+}
+
+const onLogOut = (req, res) => {
+    res.clearCookie('token');
+    res.json({ success: true, message: 'Logged out successfully'})
+}
+
 module.exports = {
     test,
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    addRecycleHistory,
+    addRedeemHistory,
+    recycleAction,
+    redeemAction,
+    updateProfile,
+    onLogOut
 }
