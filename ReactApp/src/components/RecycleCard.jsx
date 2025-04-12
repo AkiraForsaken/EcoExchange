@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react'
 import axios from 'axios'
 import { UserContext } from '../../context/UserContext'
+import {toast} from 'react-hot-toast'
 
 const RecycleCard = ({ type }) => {
   const typeLabels = {
@@ -14,6 +15,7 @@ const RecycleCard = ({ type }) => {
   const {user, setUser} = useContext(UserContext);
   const [weight, setWeight] = useState(1);
   const [points, setPoints] = useState(10);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleWeightChange = (event) => {
     let updatedWeight = parseInt(event.target.value, 10) || 1; 
@@ -23,6 +25,7 @@ const RecycleCard = ({ type }) => {
   }
 
   const handleRecycle = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('/recycle', {
         userId: user._id,
@@ -31,12 +34,19 @@ const RecycleCard = ({ type }) => {
         pointsEarned: points,
       });
       if (response.data.success) {
-        const updatedUser = response.data.user;
-        // setUser({ ...user, points: user.points + points });
-        setUser(updatedUser);
+        // const updatedUser = response.data.user;
+        // setUser(updatedUser);
+        // toast.success(`Recycled ${weight}g of ${typeLabels[type]} for ${points} points!`);
+        toast.success('Recycling request submitted. Awaiting confirmation.');
+      } else {
+        toast.error('Failed to submit recycling request.');
       }
     } catch (error) {
-      console.error('Error recycling:', error);
+      // console.error('Error recycling:', error);
+      console.error('Error submitting recycling request:', error);
+      toast.error('An error occurred while submitting the request.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,7 +61,9 @@ const RecycleCard = ({ type }) => {
             value={weight} min={1} max={100000}></input>
             <span>grams</span>
         </div>
-        <button onClick={handleRecycle}>Recycle for {points} points</button>
+        <button onClick={handleRecycle} disabled={loading}>
+          Recycle for {points} points
+        </button>
     </div>
   )
 }

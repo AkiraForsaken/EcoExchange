@@ -33,7 +33,7 @@ const LoginSignup = ({ onClose }) => {
                     password: '',
                 })
                 toast.success('Register success. Welcome!')
-                navigate('/')
+                navigate('/EcoExchange')
                 onClose()
             }
         } catch (error) {
@@ -56,7 +56,7 @@ const LoginSignup = ({ onClose }) => {
                 })
                 setUser(data); // Update UserContext
                 toast.success('Login success.')
-                navigate('/')
+                navigate('/EcoExchange')
                 onClose()
             }
         } catch (error) {

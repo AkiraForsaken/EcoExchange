@@ -20,22 +20,39 @@ const userSchema = new Schema({
         type: String,
         default: '',
     },
+    pendingRecycle: {
+        type: [
+            {
+            type: { type: String }, // Type of recycled item
+            weight: Number, // Weight of the recycled item
+            pointsEarned: Number, // Points to be awarded
+            date: { type: Date, default: Date.now }, // Date of request
+            },
+        ],
+        default: [],
+    },
     history: {
-        recycleItems: [
-            {
-                type: { type: String },
-                weight: Number,
-                pointsEarned: Number,
-                date: { type: Date, default: Date.now },
-            },
-        ],
-        redeemItems: [
-            {
-                type: { type: String },
-                price: Number,
-                date: { type: Date, default: Date.now },
-            },
-        ],
+        recycleItems: {
+            type: [
+                {
+                    type: { type: String },
+                    weight: Number,
+                    pointsEarned: Number,
+                    date: { type: Date, default: Date.now },
+                },
+            ],
+            default: [],
+        },
+        redeemItems: {
+            type: [
+                {
+                    type: { type: String },
+                    price: Number,
+                    date: { type: Date, default: Date.now },
+                },
+            ],
+            default: [],
+        },
     },
 })
 

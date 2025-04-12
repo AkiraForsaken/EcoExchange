@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors')
-const {test, registerUser, loginUser, getProfile, recycleAction, redeemAction, updateProfile, onLogOut} = require('../controllers/authController')
+const {test, registerUser, loginUser, getProfile, recycleAction, redeemAction, updateProfile, onLogOut, confirmRecycle, getPendingRecycles} = require('../controllers/authController')
 
 // middleware
 router.use(
     cors({
         credentials: true,
-        origin: 'http://localhost:5173'
+        origin: ['http://localhost:5173', 'https://AkiraForsaken.github.io']
     })
 )
 
@@ -20,5 +20,7 @@ router.post('/recycle', recycleAction)
 router.post('/redeem', redeemAction)
 router.put('/profile', updateProfile)
 router.post('/logout', onLogOut)
+router.post('/confirm-recycle', confirmRecycle)
+router.get('/admin/pending-recycles', getPendingRecycles)
 
 module.exports = router
