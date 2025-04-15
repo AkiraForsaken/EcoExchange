@@ -117,26 +117,60 @@ const recycleAction = async (req, res) => {
     const { userId, type, weight, pointsEarned } = req.body;
     try {
         const user = await User.findByIdAndUpdate(
-          userId,
-          {
-            $push: {
-              'history.recycleItems': {
-                type,
-                weight,
-                pointsEarned,
-              },
+            userId,
+            {
+                $push: {
+                    pendingRecycle: {
+                        type,
+                        weight,
+                        pointsEarned,
+                    },
+                },
             },
-            $inc: { points: pointsEarned }, // Increment user points
-          },
-          { new: true } // Ensure updated user obj is returned
+            { new: true } // Ensure updated user object is returned
         );
-    
-        res.json({ success: true, user });
+
+        res.json({ success: true, message: 'Recycling request submitted. Awaiting confirmation.' });
     } catch (error) {
-        console.error('Error recycling:', error);
-        res.status(500).json({ success: false, error: 'Failed to recycle item' });
+        console.error('Error submitting recycling request: ', error);
+        res.status(500).json({ success: false, error: 'Failed to submit recycling request' });
     }
 }
+
+const confirmRecycle = async (req, res) => {
+    const { userId, requestId } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+
+        // Find the pending request
+        const request = user.pendingRecycle.id(requestId);
+        if (!request) {
+            return res.status(404).json({ success: false, error: 'Request not found' });
+        }
+
+        // Move the request to recycle history
+        user.history.recycleItems.push({
+            type: request.type,
+            weight: request.weight,
+            pointsEarned: request.pointsEarned,
+            date: request.date,
+        });
+
+        // Award points
+        user.points += request.pointsEarned;
+
+        // Remove the request from pendingRecycle
+        user.pendingRecycle.id(requestId).remove();
+
+        await user.save();
+  
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error confirming recycling request:', error);
+        res.status(500).json({ success: false, error: 'Failed to confirm recycling    request' });
+    }
+};
 
 const redeemAction = async (req, res) => {
     const { userId, type, price } = req.body;
@@ -190,6 +224,16 @@ const onLogOut = (req, res) => {
     res.json({ success: true, message: 'Logged out successfully'})
 }
 
+const getPendingRecycles = async (req, res) => {
+    try {
+      const users = await User.find({ 'pendingRecycle.0': { $exists: true } }, 'name pendingRecycle');
+      res.json({ success: true, users });
+    } catch (error) {
+      console.error('Error fetching pending recycling requests:', error);
+      res.status(500).json({ success: false, error: 'Failed to fetch pending recycling requests' });
+    }
+};
+
 module.exports = {
     test,
     registerUser,
@@ -198,7 +242,9 @@ module.exports = {
     addRecycleHistory,
     addRedeemHistory,
     recycleAction,
+    confirmRecycle,
     redeemAction,
     updateProfile,
-    onLogOut
+    onLogOut,
+    getPendingRecycles
 }
