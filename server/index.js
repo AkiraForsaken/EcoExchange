@@ -107,7 +107,7 @@ const checkPendingRecycles = async () => {
 };
   
 // Periodically check for pending recycling requests
-setInterval(checkPendingRecycles, 30000); // Check every 30 seconds
+// setInterval(checkPendingRecycles, 30000); // Check every 30 seconds
 
 // const initializeHistoryFields = async () => {
 //     try {

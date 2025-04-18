@@ -14,8 +14,8 @@ import UserInfo from './components/UserInfo'
 //                        -> shows the recycle cards options
 // Notes: Add section about recyclable waste (2/4/2025)
 
-axios.defaults.baseURL = 'http://localhost:8000';
-// axios.defaults.baseURL = 'http://192.168.1.7:8000';
+// axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = 'https://ecoexchange.onrender.com';
 axios.defaults.withCredentials = true;
 
 function App() {
