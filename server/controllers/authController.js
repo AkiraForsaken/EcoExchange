@@ -65,10 +65,15 @@ const loginUser = async (req, res) => {
                 error: 'password do not match'
             })
         } else { //
-            jwt.sign({email: user.email, id: user._id, name: user.name}, process.env.JWT_SECRET, {}, (err, token) => {
+            jwt.sign({ email: user.email, id: user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).json(user)
-            }) // sign the token with the credentials, then passed to profile
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true, // Ensure this is true in production
+                    sameSite: 'strict', // Prevent CSRF attacks
+                    path: '/', // Make the cookie available for all routes
+                }).json(user);
+            }); // sign the token with the credentials, then passed to profile
         }
     } catch (error) {
         console.log(error)
@@ -271,9 +276,8 @@ const getPendingRecycles = async (req, res) => {
     }
 };
 
-
-
 const adminMiddleware = async (req, res, next) => {
+    console.log('Cookies:', req.cookies); // Log cookies for debugging
     const { token } = req.cookies;
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -287,6 +291,7 @@ const adminMiddleware = async (req, res, next) => {
         }
         next();
     } catch (error) {
+        console.error('Error in adminMiddleware:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };

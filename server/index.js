@@ -9,12 +9,19 @@ const app = express()
 
 app.use(
     cors({
-      credentials: true,
-      origin: [
-        'http://localhost:5173', // Local development
-        'https://ecoexchangebk.netlify.app', // Netlify app
-        'https://ecoexchange.onrender.com', // Render server (if needed)
-      ],
+        credentials: true,
+        origin: (origin, callback) => {
+            const allowedOrigins = [
+                'http://localhost:5173', // Local development
+                'https://ecoexchangebk.netlify.app', // Netlify app
+                'https://ecoexchange.onrender.com', // Render server (if needed)
+            ];
+            if (allowedOrigins.includes(origin) || !origin) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
     })
 );
 
