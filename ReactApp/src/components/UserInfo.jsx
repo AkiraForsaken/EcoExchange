@@ -23,7 +23,7 @@ const UserInfo = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put('/profile', formData); // Update user profile
+      const response = await axios.put('/profile', formData, {withCredentials: true}); // Update user profile
       if (response.data.success) {
         setUser(response.data.user); // Update UserContext with new data
         toast.success('Saved information successfully');

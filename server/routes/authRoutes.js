@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const cors = require('cors')
-const {test, registerUser, loginUser, getProfile, recycleAction, redeemAction, updateProfile, onLogOut, confirmRecycle, getPendingRecycles} = require('../controllers/authController')
+const {test, registerUser, loginUser, getProfile, recycleAction, redeemAction, updateProfile, onLogOut, confirmRecycle, getPendingRecycles, adminMiddleware} = require('../controllers/authController')
 
 // middleware
 router.use(
@@ -23,6 +23,7 @@ router.post('/redeem', redeemAction)
 router.put('/profile', updateProfile)
 router.post('/logout', onLogOut)
 router.post('/confirm-recycle', confirmRecycle)
-router.get('/admin/pending-recycles', getPendingRecycles)
+router.get('/admin/pending-recycles', adminMiddleware, getPendingRecycles)
+router.post('/admin/confirm-recycle', adminMiddleware, confirmRecycle)
 
 module.exports = router

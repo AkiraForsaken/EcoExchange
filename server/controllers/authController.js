@@ -79,9 +79,6 @@ const getProfile = (req, res) => { //
     const {token} = req.cookies
     if (token){
         jwt.verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
-            if (err.name === 'TokenExpiredError') {
-                return res.status(401).json({ error: 'Token expired. Please log in again.' });
-            }
             if (err) throw err;
             const user = await User.findById(decoded.id).select('-password')
             res.json(user)
@@ -140,17 +137,54 @@ const recycleAction = async (req, res) => {
     }
 }
 
+// const confirmRecycle = async (req, res) => {
+//     const { userId, requestId } = req.body;
+
+//     try {
+//         const user = await User.findById(userId);
+
+//         // Find the pending request
+//         const request = user.pendingRecycle.id(requestId);
+//         if (!request) {
+//             return res.status(404).json({ success: false, error: 'Request not found' });
+//         }
+
+//         // Move the request to recycle history
+//         user.history.recycleItems.push({
+//             type: request.type,
+//             weight: request.weight,
+//             pointsEarned: request.pointsEarned,
+//             date: request.date,
+//         });
+
+//         // Award points
+//         user.points += request.pointsEarned;
+
+//         // Remove the request from pendingRecycle
+//         user.pendingRecycle.id(requestId).remove();
+
+//         await user.save();
+  
+//         res.json({ success: true, user });
+//     } catch (error) {
+//         console.error('Error confirming recycling request:', error);
+//         res.status(500).json({ success: false, error: 'Failed to confirm recycling    request' });
+//     }
+// };
+
 const confirmRecycle = async (req, res) => {
     const { userId, requestId } = req.body;
 
     try {
         const user = await User.findById(userId);
 
-        // Find the pending request
-        const request = user.pendingRecycle.id(requestId);
-        if (!request) {
+        // Find the index of the pending request
+        const requestIndex = user.pendingRecycle.findIndex((req) => req._id.toString() === requestId);
+        if (requestIndex === -1) {
             return res.status(404).json({ success: false, error: 'Request not found' });
         }
+
+        const request = user.pendingRecycle[requestIndex];
 
         // Move the request to recycle history
         user.history.recycleItems.push({
@@ -164,14 +198,14 @@ const confirmRecycle = async (req, res) => {
         user.points += request.pointsEarned;
 
         // Remove the request from pendingRecycle
-        user.pendingRecycle.id(requestId).remove();
+        user.pendingRecycle.splice(requestIndex, 1);
 
         await user.save();
-  
+
         res.json({ success: true, user });
     } catch (error) {
         console.error('Error confirming recycling request:', error);
-        res.status(500).json({ success: false, error: 'Failed to confirm recycling    request' });
+        res.status(500).json({ success: false, error: 'Failed to confirm recycling request' });
     }
 };
 
@@ -237,6 +271,26 @@ const getPendingRecycles = async (req, res) => {
     }
 };
 
+
+
+const adminMiddleware = async (req, res, next) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (!user || !user.isAdmin) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+        next();
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     test,
     registerUser,
@@ -249,5 +303,6 @@ module.exports = {
     redeemAction,
     updateProfile,
     onLogOut,
-    getPendingRecycles
+    getPendingRecycles,
+    adminMiddleware
 }

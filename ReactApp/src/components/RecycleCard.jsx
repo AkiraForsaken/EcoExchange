@@ -2,15 +2,29 @@ import React, {useContext, useState} from 'react'
 import axios from 'axios'
 import { UserContext } from '../../context/UserContext'
 import {toast} from 'react-hot-toast'
+import plastic_bottles from '../assets/images/plastic-bottles.jpg'
+import aluminium_cans from '../assets/images/aluminium-cans.jpg'
+import paper from '../assets/images/paper.jpg'
+import cardboard from '../assets/images/cardboard.jpg'
+import glass from '../assets/images/glass.jpg'
+import batteries from '../assets/images/batteries.jpg'
 
 const RecycleCard = ({ type }) => {
   const typeLabels = {
-    "plastic-bottles":"Plastic bottles",
-    "aluminium-cans":"Aluminium cans",
+    "plastic_bottles":"Plastic bottles",
+    "aluminium_cans":"Aluminium cans",
     "paper":"Old paper",
     "cardboard":"Cardboard",
     "glass":"Glass",
     "batteries":"Old batteries"
+  }
+  const typeToImage = {
+    "plastic_bottles":plastic_bottles,
+    "aluminium_cans":aluminium_cans,
+    "paper":paper,
+    "cardboard":cardboard,
+    "glass":glass,
+    "batteries":batteries
   }
   const {user, setUser} = useContext(UserContext);
   const [weight, setWeight] = useState(1);
@@ -52,8 +66,8 @@ const RecycleCard = ({ type }) => {
 
   return (
     <div className='recycle-card'>
-        <img src={`${import.meta.env.BASE_URL}/images/${type}.jpg`} alt={type}></img>
-        <h3>{type}</h3>
+        <img src={typeToImage[type]} alt={type}></img>
+        <h3>{typeLabels[type]}</h3>
         <div className='flex-center flex-row'>
             <p>Weight:</p>
             <input type='number' placeholder='1' 

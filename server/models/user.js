@@ -20,13 +20,18 @@ const userSchema = new Schema({
         type: String,
         default: '',
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
     pendingRecycle: {
         type: [
             {
-            type: { type: String }, // Type of recycled item
-            weight: Number, // Weight of the recycled item
-            pointsEarned: Number, // Points to be awarded
-            date: { type: Date, default: Date.now }, // Date of request
+                _id: { type: Schema.Types.ObjectId, auto: true }, // Add this line
+                type: { type: String }, // Type of recycled item
+                weight: Number, // Weight of the recycled item
+                pointsEarned: Number, // Points to be awarded
+                date: { type: Date, default: Date.now }, // Date of request
             },
         ],
         default: [],

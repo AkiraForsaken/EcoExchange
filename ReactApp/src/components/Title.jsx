@@ -4,7 +4,7 @@ import profilePic from '../assets/profilepic.png'
 import { UserContext } from '../../context/UserContext'
 import toast from 'react-hot-toast'
 
-const Title = ({ onLoginClick, onStoreClick, onUserInfoClick }) => {
+const Title = ({ onLoginClick, onStoreClick, onUserInfoClick, onAdminClick }) => {
     const {user} = useContext(UserContext)
     return (
         <nav className="flex justify-between items-center h-20 text-black text-2xl">
@@ -13,8 +13,10 @@ const Title = ({ onLoginClick, onStoreClick, onUserInfoClick }) => {
                 <span className='text-4xl'>EcoExchange</span>
             </div>
             <div className='flex-center gap-8 p-4 '>
-                {user ? <a className='cursor-pointer' 
-                onClick={user ? onStoreClick : () => {toast.error('Not Logged In')}}> Store </a> : <></>}
+                {user?.isAdmin && <a className='cursor-pointer' 
+                onClick={onAdminClick}> Admin </a>}
+                {user && <a className='cursor-pointer' 
+                onClick={onStoreClick}> Store </a>}
                 <a className='cursor-pointer'> About </a>
                 <a className='cursor-pointer' 
                 onClick={user ? onUserInfoClick : onLoginClick}> 
