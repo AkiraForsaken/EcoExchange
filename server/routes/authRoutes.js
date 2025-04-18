@@ -8,7 +8,7 @@ router.use(
     cors({
         credentials: true,
         origin: ['http://localhost:5173',
-            'https://AkiraForsaken.github.io/EcoExchange',
+            'https://ecoexchange.onrender.com',
             'https://ecoexchangebk.netlify.app/']
     })
 )
