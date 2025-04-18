@@ -7,6 +7,17 @@ const readline = require('readline') // For interactive terminal input
 const User = require('./models/user') // Import the User model
 const app = express()
 
+app.use(
+    cors({
+      credentials: true,
+      origin: [
+        'http://localhost:5173', // Local development
+        'https://ecoexchangebk.netlify.app', // Netlify app
+        'https://ecoexchange.onrender.com', // Render server (if needed)
+      ],
+    })
+);
+
 // database connection
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('Database connected'))

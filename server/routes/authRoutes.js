@@ -9,7 +9,7 @@ router.use(
         credentials: true,
         origin: ['http://localhost:5173',
             'https://ecoexchange.onrender.com',
-            'https://ecoexchangebk.netlify.app/']
+            'https://ecoexchangebk.netlify.app']
     })
 )
 
