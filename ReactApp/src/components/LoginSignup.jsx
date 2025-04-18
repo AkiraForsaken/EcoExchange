@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import {toast} from 'react-hot-toast'
-import {data, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import './login.css'
 import { UserContext } from '../../context/UserContext'
 
 const LoginSignup = ({ onClose }) => {
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const { setUser } = useContext(UserContext)
     const [loginData, setLoginData] = useState({
@@ -43,6 +44,7 @@ const LoginSignup = ({ onClose }) => {
     const loginUser = async (e) => {
         e.preventDefault()
         const {email, password} = loginData
+        setLoading(true)
         try {
             const {data} = await axios.post('/login', {
                 email, password
@@ -61,6 +63,8 @@ const LoginSignup = ({ onClose }) => {
             }
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
     const [isActive, setIsActive] = useState(false);
@@ -107,7 +111,7 @@ const LoginSignup = ({ onClose }) => {
                         value={loginData.password} onChange={(e) => {setLoginData({...loginData, password: e.target.value})}}/>
                         <a href="#">Forgot your password?</a>
                         {/* <button onClick={() => {onLoginClick(); onClose();}}>Log in</button> */}
-                        <button type="submit">Log in</button>
+                        <button type="submit" disabled={loading}> {loading ? "Logging in..." : "Log in"}</button>
                     </form>
                 </div>
                 <div className='toggle-container'>

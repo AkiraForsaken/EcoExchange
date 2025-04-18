@@ -79,6 +79,9 @@ const getProfile = (req, res) => { //
     const {token} = req.cookies
     if (token){
         jwt.verify(token, process.env.JWT_SECRET, {}, async (err, decoded) => {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ error: 'Token expired. Please log in again.' });
+            }
             if (err) throw err;
             const user = await User.findById(decoded.id).select('-password')
             res.json(user)

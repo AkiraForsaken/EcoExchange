@@ -7,7 +7,9 @@ const {test, registerUser, loginUser, getProfile, recycleAction, redeemAction, u
 router.use(
     cors({
         credentials: true,
-        origin: ['http://localhost:5173', 'https://AkiraForsaken.github.io']
+        origin: ['http://localhost:5173',
+            'https://AkiraForsaken.github.io/EcoExchange',
+            'https://ecoexchangebk.netlify.app/']
     })
 )
 

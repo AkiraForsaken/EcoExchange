@@ -7,9 +7,9 @@ const UserInfo = ({ onClose }) => {
   const {user, setUser} = useContext(UserContext) // to use: user.name, user.email,...
 
   const [formData, setFormData] = useState({
-    name: user.name || '',
-    age: user.age || '',
-    address: user.address || '',
+    name: user?.name || '',
+    age: user?.age || '',
+    address: user?.address || '',
   });
 
   const handleDataChange = (event) => {

@@ -1,7 +1,7 @@
 {
   "name": "login-signup-page",
   "private": true,
-  "homepage": "https://AkiraForsaken.github.io/EcoExchange/",
+  "homepage": "https://ecoexchangebk.netlify.app/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
